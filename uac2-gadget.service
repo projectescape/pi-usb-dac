@@ -1,0 +1,13 @@
+[Unit]
+Description=UAC2 USB Audio Gadget
+After=systemd-modules-load.service
+Before=camilladsp.service sound.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/sbin/uac2-gadget.sh
+ExecStop=/bin/bash -c 'echo "" > /sys/kernel/config/usb_gadget/pi-dac/UDC 2>/dev/null; true'
+
+[Install]
+WantedBy=multi-user.target

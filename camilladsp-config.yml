@@ -1,0 +1,36 @@
+---
+# CamillaDSP config — bit-perfect passthrough
+# Routes USB gadget capture → DAC HAT playback with no processing
+# rate_adjust follows capture device clock, eliminating buffer issues
+devices:
+  samplerate: 44100
+  chunksize: 4096
+  queuelimit: 4
+  enable_rate_adjust: true
+  capture:
+    type: Alsa
+    channels: 2
+    device: "hw:UAC2Gadget,0"
+    format: S32_LE
+  playback:
+    type: Alsa
+    channels: 2
+    device: "hw:Katana,0"
+    format: S32_LE
+
+mixers:
+  passthrough:
+    channels:
+      in: 2
+      out: 2
+    mapping:
+      - dest: 0
+        sources:
+          - channel: 0
+      - dest: 1
+        sources:
+          - channel: 1
+
+pipeline:
+  - type: Mixer
+    name: passthrough

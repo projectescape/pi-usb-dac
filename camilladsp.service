@@ -1,0 +1,18 @@
+[Unit]
+Description=CamillaDSP Audio Processor (bit-perfect USB→DAC)
+After=sound.target uac2-gadget.service
+Wants=sound.target uac2-gadget.service
+Requires=uac2-gadget.service
+
+[Service]
+Type=simple
+User=root
+ExecStart=/usr/local/bin/camilladsp -s /var/lib/camilladsp/state.yml /etc/camilladsp/config.yml
+Restart=always
+RestartSec=3
+Nice=-10
+LimitRTPRIO=99
+LimitMEMLOCK=65536
+
+[Install]
+WantedBy=multi-user.target
