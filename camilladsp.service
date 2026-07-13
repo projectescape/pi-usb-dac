@@ -7,7 +7,7 @@ Requires=uac2-gadget.service
 [Service]
 Type=simple
 User=root
-ExecStart=/usr/local/bin/camilladsp -s /var/lib/camilladsp/state.yml /etc/camilladsp/config.yml
+ExecStart=/usr/local/bin/camilladsp-wrapper
 Restart=always
 RestartSec=3
 Nice=-10

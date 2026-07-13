@@ -61,9 +61,11 @@ log "Deploying UAC2 gadget script..."
 cp "$SKILL_DIR/uac2-gadget.sh" /usr/local/sbin/
 chmod +x /usr/local/sbin/uac2-gadget.sh
 
-log "Deploying CamillaDSP config..."
+log "Deploying CamillaDSP config and wrapper..."
 mkdir -p /etc/camilladsp /var/lib/camilladsp
 cp "$SKILL_DIR/camilladsp-config.yml" /etc/camilladsp/config.yml
+cp "$SKILL_DIR/camilladsp-wrapper" /usr/local/bin/
+chmod +x /usr/local/bin/camilladsp-wrapper
 
 # === 4. Install systemd services ===
 log "Installing systemd services..."

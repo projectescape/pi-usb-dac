@@ -1,0 +1,13 @@
+#!/bin/bash
+# camilladsp-wrapper — reads current UAC2 capture rate and starts CamillaDSP
+# Ensures CamillaDSP opens at the device's actual rate after a rate change,
+# maintaining true bit-perfect passthrough.
+
+CAPTURE_PROC=/proc/asound/card3/pcm0c/sub0/hw_params
+CONFIG=/etc/camilladsp/config.yml
+STATE=/var/lib/camilladsp/state.yml
+
+# Read current capture device rate, fall back to 44100
+RATE=$(grep -oP 'rate: \K[0-9]+' "$CAPTURE_PROC" 2>/dev/null || echo 44100)
+
+exec camilladsp -s "$STATE" -r "$RATE" "$CONFIG"

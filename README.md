@@ -33,6 +33,15 @@ Laptop ──USB──▶ Pi ──CamillaDSP──▶ DAC HAT ──▶ Speaker
 - **Audio optimizations** — WiFi power save disabled, CPU governor locked to performance
 - **DSP filter** — Linear Phase Slow Roll-off (community-preferred)
 
+## Sample Rate Switching
+
+`stop_on_rate_change: true` combined with `camilladsp-wrapper` (which reads the capture device's current rate on start) means CamillaDSP automatically follows the host's sample rate:
+
+- Host plays 44.1k → opens at 44.1k → bit-perfect
+- Host switches to 96k → CamillaDSP detects change → stops → systemd restarts → wrapper reads 96k → opens at 96k → bit-perfect
+
+No resampling. Every rate change triggers a clean restart at the new rate.
+
 ## Architecture
 
 | Component | File | Purpose |

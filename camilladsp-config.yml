@@ -7,6 +7,7 @@ devices:
   chunksize: 4096
   queuelimit: 4
   enable_rate_adjust: true
+  stop_on_rate_change: true
   capture:
     type: Alsa
     channels: 2
