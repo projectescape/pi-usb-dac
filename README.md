@@ -4,18 +4,15 @@ Turn a Raspberry Pi 5 into a high-resolution USB DAC — laptop connects via USB
 
 ## Hardware
 
-- Raspberry Pi 5 (Pi 4 also works)
-- DAC HAT:
-  - **InnoMaker DAC PRO HAT** (ES9038Q2M) — 32-bit/384kHz + DSD
-  - **InnoMaker HiFi DAC HAT** (PCM5122) — 24-bit/192kHz
+- Raspberry Pi 5
+- **InnoMaker DAC PRO HAT** — ES9038Q2M chip, 32-bit/384kHz + DSD
 
 ## Quick Start
 
 ```bash
-git clone https://github.com/aniket965/pi-usb-dac.git
+git clone https://github.com/projectescape/pi-usb-dac.git
 cd pi-usb-dac
-sudo bash setup.sh katana   # ES9038Q2M
-# or: sudo bash setup.sh boss   # PCM5122
+sudo bash setup.sh
 sudo reboot
 ```
 

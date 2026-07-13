@@ -1,36 +1,18 @@
 #!/bin/bash
-# setup-pi-dac.sh — One-shot setup for Pi USB DAC gadget
-# Run on a fresh Raspberry Pi OS install with the DAC HAT physically attached.
+# setup.sh — One-shot setup for Pi USB DAC gadget (ES9038Q2M)
+# Run on a fresh Raspberry Pi OS install with the InnoMaker DAC PRO HAT attached.
 #
-# Usage: sudo bash setup-pi-dac.sh [--dac katana|boss]
-#   katana = ES9038Q2M (InnoMaker DAC PRO, Allo Katana)
-#   boss   = PCM5122 (InnoMaker HiFi DAC, Allo Boss)
+# Usage: sudo bash setup.sh
 
 set -euo pipefail
 
-DAC_TYPE="${1:-katana}"
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-NC='\033[0m'
+DAC_OVERLAY="allo-katana-dac-audio"
+DAC_NAME="Katana"
 
-log()  { echo -e "${GREEN}[setup]${NC} $*"; }
-warn() { echo -e "${RED}[setup]${NC} $*"; }
+log()  { echo "[setup] $*"; }
+warn() { echo "[setup] WARN: $*"; }
 
-# === Validate DAC type ===
-if [ "$DAC_TYPE" = "katana" ]; then
-    DAC_OVERLAY="allo-katana-dac-audio"
-    DAC_NAME="Katana"
-elif [ "$DAC_TYPE" = "boss" ]; then
-    DAC_OVERLAY="allo-boss-dac-pcm512x-audio"
-    DAC_NAME="Boss DAC"
-else
-    echo "Usage: $0 [katana|boss]"
-    echo "  katana = ES9038Q2M (DAC PRO HAT)"
-    echo "  boss   = PCM5122 (HiFi DAC HAT)"
-    exit 1
-fi
-
-log "Setting up Pi USB DAC with $DAC_NAME ($DAC_OVERLAY)"
+log "Setting up Pi USB DAC — InnoMaker DAC PRO HAT (ES9038Q2M)"
 
 # === 1. System config ===
 log "Configuring /boot/firmware/config.txt..."
@@ -100,7 +82,7 @@ sleep 2
 # Find the DAC card
 DAC_CARD=""
 for card in /proc/asound/card*; do
-    if grep -qi "$DAC_NAME\|allo\|Katana\|Boss" "$card/id" 2>/dev/null; then
+    if grep -qi "Katana\|allo" "$card/id" 2>/dev/null; then
         DAC_CARD=$(basename "$card" | sed 's/card//')
         break
     fi
