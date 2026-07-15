@@ -1,13 +1,17 @@
 [Unit]
-Description=UAC2 USB Audio Gadget
+Description=USB Audio Gadget (ES9038Q2M)
 After=systemd-modules-load.service
-Before=camilladsp.service sound.target
+Before=usb-dac-loop.service sound.target
 
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/usr/local/sbin/uac2-gadget.sh
-ExecStop=/bin/bash -c 'echo "" > /sys/kernel/config/usb_gadget/pi-dac/UDC 2>/dev/null; true'
+ExecStart=/usr/local/sbin/uac2-gadget.sh --mode dual
+# Stop: handles both configfs (unbind UDC) and g_audio (unload module)
+ExecStop=/bin/bash -c '\
+  [ -d /sys/kernel/config/usb_gadget/pi-dac ] && echo "" > /sys/kernel/config/usb_gadget/pi-dac/UDC 2>/dev/null; \
+  lsmod | grep -q "^g_audio" && modprobe -r g_audio 2>/dev/null; \
+  true'
 
 [Install]
 WantedBy=multi-user.target
